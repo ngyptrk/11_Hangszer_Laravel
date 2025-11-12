@@ -16,12 +16,11 @@ class Product extends Model
     //Ha létrehozunk egy új terméket, akkor milyen adatokat tudunk megadni
     //Ez kötelező, a többit nem engedi
     protected $fillable = [
-        'category',
         'name',
         'description',
-        'picture',
+        'brand',
         'price',
-        'stock',
+        'quantity',
     ];
 
     protected $hidden =[

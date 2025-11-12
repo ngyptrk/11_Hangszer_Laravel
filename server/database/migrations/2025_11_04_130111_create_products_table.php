@@ -4,6 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+use function Laravel\Prompts\text;
+
 return new class extends Migration
 {
     /**
@@ -15,21 +17,14 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->integer('id')->autoIncrement();
             $table->primary('id');
-            $table->string('category', 255)->notNull();
-            $table->string('name', 191)->notNull();
-            $table->string('description', 255);
-            $table->string('picture', 255);
-            $table->Integer('price');
-            $table->Integer('stock');
+            $table->string('name', 255)->notNull()->default(null);
+            $table->text('description')->notNull()->default(null);
+            $table->string('brand', 255)->notNull()->default(null);
+            $table->Integer('price')->notNull()->default(null);
+            $table->Integer('quantity')->notNull()->default(null);
             //Minta mezők
 
             //Személyes adatok
-            $table->string('personName', 255)->nullable()->default(null);
-            $table->string('zipcode', 10)->nullable()->default(null);
-            $table->string('city', 100)->nullable()->default(null);
-            $table->string('adress', 255)->nullable()->default(null);
-            $table->string('phone', 50)->nullable()->default(null);
-            $table->date('dob')->nullable()->default(null);
 
             // --- 2. Logikai (BOOLEAN) Alapértelmezett Értékkel
             // Alapértelmezés: FALSE (0)
