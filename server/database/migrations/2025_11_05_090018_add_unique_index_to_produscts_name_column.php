@@ -16,9 +16,8 @@ return new class extends Migration
             //Egyedi indexet teszek a name mezőre
             $table->unique('name', 'products_name_unique');
             //Beteszek egy új oszlopot
-            $table->boolean('is_published2')->default(false);
+
             //Módosítom a mező méretét
-            $table->string('category', 200)->change();
         });
     }
 
@@ -33,11 +32,10 @@ return new class extends Migration
             $table->dropUnique(['name']);
             // VAGY az index nevével:
             // $table->dropUnique('products_name_unique');
-            $table->dropColumn('is_published2');
 
             // 2. A string oszlop méretének visszaállítása az eredeti 100-ra
             // (Az "posts" tábla eredeti oszlop mérete feltételezve: 100)
-            $table->string('category', 255)->change();
+
         });
     }
 };

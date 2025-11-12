@@ -122,7 +122,7 @@ class ProductFactory extends Factory
 
             // Véletlen adatok a Faker segítségével
             'price' => $this->faker->numberBetween(500, 5000), // Véletlen ár 500 és 5000 között
-            'stock' => $this->faker->numberBetween(0, 1000),   // Véletlen raktárkészlet 0 és 1000 között
+            'quantity' => $this->faker->numberBetween(0, 1000),   // Véletlen raktárkészlet 0 és 1000 között
 
         ];
     }

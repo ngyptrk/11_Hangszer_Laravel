@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    public $timestamps = true;
+    public $timestamps = false;
     /** @use HasFactory<\Database\Factories\ProductFactory> */
     use HasFactory;
 
@@ -22,18 +22,4 @@ class Product extends Model
         'price',
         'quantity',
     ];
-
-    protected $hidden =[
-        'personName',
-        'zipcode'
-    ];
-
-    protected function casts(): array
-    {
-        return [
-            'is_published' => 'boolean',
-            'price' => 'integer',
-            'dob' => 'date'
-        ];
-    }
 }

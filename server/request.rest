@@ -6,7 +6,7 @@
 ### @token = 12|ibiwTdr77o8ppToh1tBxIkckBNb8ECjIjLgaweTaa757cdef
 
 ### teszt
-get {{host}}/api/x
+get {{host}}/products/1
 
 
 ### get methods
@@ -34,12 +34,12 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "category": "Bogyós",
+
     "name": "f3333",
     "description": "Kézzel termelt egészség",
-    "picture": "https:\/\/hur.webmania.cc\/img\/malna.jpg",
+    "brand": "alma",
     "price": 8000,
-    "stock": 22
+    "quantity": 22
 }
 
 ### delete product by id
@@ -54,5 +54,5 @@ Content-Type: application/json
 
 {
     "price": 1002,
-    "stock": "eee"
+    "quantity": "22"
 }
