@@ -1,0 +1,58 @@
+### változók
+@protocol = http://
+@hostname = localhost
+@port = 8000
+@host = {{protocol}}{{hostname}}:{{port}}
+### @token = 12|ibiwTdr77o8ppToh1tBxIkckBNb8ECjIjLgaweTaa757cdef
+
+### teszt
+get {{host}}/api/x
+
+
+### get methods
+OPTIONS {{host}}/api/products
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer
+
+
+
+### get products
+get {{host}}/api/products
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer
+
+
+### get product by id
+get {{host}}/api/products/5023333
+
+
+### post products
+POST  {{host}}/api/products
+Accept: application/json
+Content-Type: application/json
+
+{
+    "category": "Bogyós",
+    "name": "f3333",
+    "description": "Kézzel termelt egészség",
+    "picture": "https:\/\/hur.webmania.cc\/img\/malna.jpg",
+    "price": 8000,
+    "stock": 22
+}
+
+### delete product by id
+delete {{host}}/api/products/104
+Accept: application/json
+Content-Type: application/json
+
+### post products
+PATCH {{host}}/api/products/1
+Accept: application/json
+Content-Type: application/json
+
+{
+    "price": 1002,
+    "stock": "eee"
+}
