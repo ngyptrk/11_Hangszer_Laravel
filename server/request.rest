@@ -5,10 +5,8 @@
 @host = {{protocol}}{{hostname}}:{{port}}
 ### @token = 12|ibiwTdr77o8ppToh1tBxIkckBNb8ECjIjLgaweTaa757cdef
 
-### teszt
-get {{host}}/products/1
-
-
+###
+get {{host}}/api
 ### get methods
 OPTIONS {{host}}/api/products
 Accept: application/json
@@ -18,18 +16,18 @@ Authorization: Bearer
 
 
 ### get products
-get {{host}}/api/products
+get {{host}}/api/instruments
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer
 
 
 ### get product by id
-get {{host}}/api/products/5023333
+get {{host}}/api/instruments/5023333
 
 
 ### post products
-POST  {{host}}/api/products
+POST  {{host}}/api/instruments
 Accept: application/json
 Content-Type: application/json
 
@@ -43,16 +41,16 @@ Content-Type: application/json
 }
 
 ### delete product by id
-delete {{host}}/api/products/104
+delete {{host}}/api/instruments/104
 Accept: application/json
 Content-Type: application/json
 
 ### post products
-PATCH {{host}}/api/products/1
+PATCH {{host}}/api/instruments/1
 Accept: application/json
 Content-Type: application/json
 
 {
     "price": 1002,
-    "quantity": "22"
+    "quantity": "224"
 }

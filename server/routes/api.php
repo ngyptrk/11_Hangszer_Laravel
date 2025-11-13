@@ -9,14 +9,15 @@ use Illuminate\Support\Facades\Route;
 // })->middleware('auth:sanctum');
 
 //endpoint
-Route::get('/x', function(){
+Route::get('/', function(){
     return 'API';
 });
 
 //Endpoint készítés
-Route::get('products', [ProductController::class, 'index']);
-Route::get('products/{id}', [ProductController::class, 'show']);
-Route::post('products', [ProductController::class, 'store']);
-Route::delete('products/{id}', [ProductController::class, 'destroy']);
-Route::patch('products/{id}', [ProductController::class, 'update']);
+
+Route::get('/instruments', [ProductController::class, 'index']);
+Route::get('/instruments/{id}', [ProductController::class, 'show']);
+Route::post('/instruments', [ProductController::class, 'store']);
+Route::patch('/instruments/{id}', [ProductController::class, 'update']);
+Route::delete('/instruments/{id}', [ProductController::class, 'destroy']);
 

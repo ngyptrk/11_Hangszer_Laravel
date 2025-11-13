@@ -82,7 +82,7 @@ class ProductFactory extends Factory
             'quantity' => 3
         ],
         [
-            'name' => 'hegedű',
+            'name' => 'hegedű2',
             'description' => 'blabla',
             'brand' => 'brand',
             'price' => 2000,

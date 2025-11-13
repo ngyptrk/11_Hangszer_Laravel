@@ -2,156 +2,113 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
-
 use App\Models\Product;
-use App\Http\Requests\StoreProductRequest;
-use App\Http\Requests\UpdateProductRequest;
+use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // GET /api/products
     public function index()
     {
-        //
-        try {
-            //code...
-            $rows = Product::all();
-            // $sql ="SELECT * FROM products";
-            // $rows = DB::select($sql);
-            $status = 200;
-            $data = [
-                'message' => 'OK',
-                'data' => $rows
-            ];
-        } catch (\Exception $e) {
-            //throw $th;
-            $status = 500;
-            $data = [
-                'message' => "Server error {$e->getCode()}",
-                'data' => $rows
-            ];
-        }
+        $products = Product::all();
 
-        return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
+        return response()->json([
+            'message' => 'OK',
+            'data' => $products
+        ], 200, [] ,JSON_UNESCAPED_UNICODE);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreProductRequest $request)
+    // GET /api/products/{id}
+    public function show($id)
+    {
+        $product = Product::find($id);
+
+        if (!$product) {
+            return response()->json([
+                'message' => 'Product not found',
+                'data' => null
+            ], 404, [] ,JSON_UNESCAPED_UNICODE);
+        }
+
+        return response()->json([
+            'message' => 'OK',
+            'data' => $product
+        ], 200, [] ,JSON_UNESCAPED_UNICODE);
+    }
+
+    // POST /api/products
+    public function store(Request $request)
     {
         try {
-            $row = product::create($request->all());
+            $product = Product::create($request->all());
 
-            $data = [
-                'message' => 'ok',
-                'data' => $row
-            ];
-            // Sikeres válasz: 201 Created kód ajánlott új erőforrás létrehozásakor
-            return response()->json($data, 201, options: JSON_UNESCAPED_UNICODE);
+            return response()->json([
+                'message' => 'OK',
+                'data' => $product
+            ], 201, [] ,JSON_UNESCAPED_UNICODE);
+
         } catch (QueryException $e) {
-            // Ellenőrizzük, hogy ez egy "Duplicate entry for key" hiba-e (MySQL hibakód: 23000 vagy 1062)
             if ($e->getCode() == 23000 || str_contains($e->getMessage(), 'Duplicate entry')) {
-                $data = [
-                    'message' => 'Insert error: The given name already exists, please choose another one',
-                    'data' => [
-                        'name' => $request->input('name') // Visszaküldhetjük, mi volt a hibás
-                    ]
-                ];
-                // Kliens hiba, ami jelzi a kérés érvénytelenségét
-                return response()->json($data, 409, options: JSON_UNESCAPED_UNICODE); // 409 Conflict ajánlott
+                return response()->json([
+                    'message' => 'Hiba: A megadott név már létezik.',
+                    'data' => ['name' => $request->input('name')]
+                ], 409, [] ,JSON_UNESCAPED_UNICODE);
             }
-            // Ha nem ez a hiba volt, dobjuk tovább az eredeti kivételt, vagy kezeljük másképp
+
             throw $e;
         }
-
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(int $id)
+    // PATCH /api/products/{id}
+    public function update(Request $request, $id)
     {
-        //
-        $row = Product::find($id);
-        if ($row) {
-            # code...
-            $status = 200;
-            $data = [
-                'message' => 'OK',
-                'data' => $row
-            ];
-        } else {
-            # code...
-            $status = 404;
-            $data = [
-                'message' => "Not found id: $id",
+        $product = Product::find($id);
+
+        if (!$product) {
+            return response()->json([
+                'message' => 'Product not found',
                 'data' => null
-            ];
+            ], 404, [] ,JSON_UNESCAPED_UNICODE);
         }
 
+        try {
+            $product->update($request->all());
 
-        return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateProductRequest $request, int $id)
-    {
-        $row = Product::find($id);
-        if ($row) {
-            # code...
-            $status = 200;
-            $row->update($request->all());
-
-            $data = [
+            return response()->json([
                 'message' => 'OK',
-                'data' => [
-                    'data' => $row
-                ]
-            ];
-        } else {
-            # code...
-            $status = 404;
-            $data = [
-                'message' => "Patch error. Not found id: $id",
-                'data' => $id
-            ];
+                'data' => $product
+            ], 200, [] ,JSON_UNESCAPED_UNICODE);
+
+        } catch (QueryException $e) {
+            if ($e->getCode() == 23000 || str_contains($e->getMessage(), 'Duplicate entry')) {
+                return response()->json([
+                    'message' => 'Hiba: A megadott név már létezik.',
+                    'data' => ['name' => $request->input('name')]
+                ], 409, [] ,JSON_UNESCAPED_UNICODE);
+            }
+
+            throw $e;
         }
-        return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(int $id)
+    // DELETE /api/products/{id}
+    public function destroy($id)
     {
-        $row = Product::find($id);
-        if ($row) {
-            # code...
-            $status = 200;
-            $row->delete();
+        $product = Product::find($id);
 
-            $data = [
-                'message' => 'OK',
-                'data' => [
-                    'id' => $id
-                ]
-            ];
-        } else {
-            # code...
-            $status = 404;
-            $data = [
-                'message' => "Delete error. Not found id: $id",
+        if (!$product) {
+            return response()->json([
+                'message' => 'Product not found',
                 'data' => null
-            ];
+            ], 404, [] ,JSON_UNESCAPED_UNICODE);
         }
-        return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
 
+        $product->delete();
+
+        return response()->json([
+            'message' => 'Product deleted',
+            'data' => $product
+        ], 200, [] ,JSON_UNESCAPED_UNICODE);
     }
 }

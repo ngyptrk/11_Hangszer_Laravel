@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //A meglévőt módosítja
         Schema::table('products', function (Blueprint $table) {
-            //Egyedi indexet teszek a name mezőre
+            // Egyedi index a name mezőre
             $table->unique('name', 'products_name_unique');
-            //Beteszek egy új oszlopot
 
-            //Módosítom a mező méretét
+            // Új logikai oszlop hozzáadása
+            $table->boolean('is_published2')->default(false);
+
+            // A category mező hosszának módosítása 200 karakterre
+            $table->string('category', 200)->change();
         });
     }
 
@@ -26,16 +28,15 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //Nem törli le
         Schema::table('products', function (Blueprint $table) {
-            // Eltávolítja az egyedi indexet az 'email' oszlopról
-            $table->dropUnique(['name']);
-            // VAGY az index nevével:
-            // $table->dropUnique('products_name_unique');
+            // Egyedi index eltávolítása (a nevével)
+            $table->dropUnique('products_name_unique');
 
-            // 2. A string oszlop méretének visszaállítása az eredeti 100-ra
-            // (Az "posts" tábla eredeti oszlop mérete feltételezve: 100)
+            // Az új oszlop törlése
+            $table->dropColumn('is_published2');
 
+            // A category mező hosszának visszaállítása az eredetire
+            $table->string('category', 255)->change();
         });
     }
 };
